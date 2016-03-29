@@ -25,6 +25,9 @@ export default ApplicationSerializer.extend({
 
     return {
       data: this.normalize(type, data),
+      links: {
+        self: this.url + this.namespace + 'document/' + data.id
+      },
       included: predicates
     };
   },
