@@ -8,6 +8,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('search');
   this.route('resource', { path: '/resource/:id'});
+  this.route('rdfobject');
 });
 
 export default Router;

@@ -1,6 +1,15 @@
 import DS from 'ember-data';
 import ApplicationSerializer from './application';
 
+function rename(names, hash) {
+  names.forEach(([from, to]) => {
+    hash[to] = hash[from];
+    delete hash[from];
+  });
+
+  return hash;
+};
+
 export default ApplicationSerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
     if (requestType === 'findAll') {
@@ -19,16 +28,17 @@ export default ApplicationSerializer.extend({
   normalizeSingleResponse(type, data) {
     // TODO - centralize predicate normalization
     let predicates = data.content && data.content.attributes ?
-      data.content.attributes.map(attr => ({
-        type: 'predicate',
-        id: attr.id,
-        attributes: attr,
-        resource: encodeURIComponent(data.id)
-      })) : [];
+      data.content.attributes.map(attr => this.normalizePredicate(type, attr)) : [];
+
+    let objects = data.content && data.content.attributes ?
+      data.content.attributes.map(attr => {
+        return attr.values.map(object => this.normalizeObject(type, object));
+      })
+      .reduce((flatObjects, objArrays) => flatObjects.concat(objArrays), []) : [];
 
     let resAsJSONAPI = {
       data: this.normalizeResource(type, data),
-      included: predicates
+      included: [].concat(predicates, objects)
     };
 
     return resAsJSONAPI;
@@ -38,12 +48,12 @@ export default ApplicationSerializer.extend({
     let relationships = hash.content && hash.content.attributes ?
       {
         predicates: {
-          data: this.normalizePredicate(type, hash.content.attributes)
+          data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
         }
       } : {};
 
     return {
-      type: 'resource', // or type.modelName
+      type: 'resource',
       id: encodeURIComponent(hash.id),
       attributes: hash,
       relationships: relationships,
@@ -51,7 +61,29 @@ export default ApplicationSerializer.extend({
   },
 
   normalizePredicate(type, hash) {
-    return hash.map(attr => ({ type: 'predicate', id: attr.id}))
+    let relationships = hash.values ?
+      {
+        objects: {
+          data: hash.values.map(object => ({ type: 'object', id: object.id}))
+        }
+      } : {};
+
+    return {
+      type: 'predicate',
+      id: hash.id,
+      attributes: hash,
+      relationships: relationships
+      //resource: encodeURIComponent(hash.resourceId)
+    };
+  },
+
+  normalizeObject(type, hash) {
+    return {
+      type: 'object',
+      id: hash.id,
+      attributes: rename([['data', 'value']], hash)
+      // predicate: hash.predicateId
+    };
   }
 });
 
