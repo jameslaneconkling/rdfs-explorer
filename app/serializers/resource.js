@@ -1,12 +1,7 @@
 import DS from 'ember-data';
 import ApplicationSerializer from './application';
-// DS.EmbeddedRecordsMixin
-export default ApplicationSerializer.extend({
-  // attrs: {
-  //   author: { embedded: 'always' },
-  //   comments: { serialize: 'ids' }
-  // },
 
+export default ApplicationSerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
     if (requestType === 'findAll') {
       return this.normalizeSearchResponse('resource', data);
@@ -22,12 +17,13 @@ export default ApplicationSerializer.extend({
   },
 
   normalizeSingleResponse(type, data) {
-    let predicates = data.content.attributes.map(attr => ({
-      type: 'predicate',
-      id: attr.id,
-      attributes: attr,
-      resource: encodeURIComponent(data.id)
-    }));
+    let predicates = data.content && data.content.attributes ?
+      data.content.attributes.map(attr => ({
+        type: 'predicate',
+        id: attr.id,
+        attributes: attr,
+        resource: encodeURIComponent(data.id)
+      })) : [];
 
     let resAsJSONAPI = {
       data: this.normalize(type, data),
@@ -39,11 +35,12 @@ export default ApplicationSerializer.extend({
   },
 
   normalize(type, hash) {
-    let relationships = {
-      predicates: {
-        data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
-      }
-    };
+    let relationships = hash.content && hash.content.attributes ?
+      {
+        predicates: {
+          data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
+        }
+      } : {};
 
     return {
       type: 'resource', // or type.modelName

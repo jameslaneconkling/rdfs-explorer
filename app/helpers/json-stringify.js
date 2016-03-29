@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember      from 'ember';
 
 export function jsonStringify(params, hash) {
   return JSON.stringify(params);
