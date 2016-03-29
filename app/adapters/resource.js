@@ -27,7 +27,7 @@ export default ApplicationAdapter.extend({
       contentType: 'application/json',
       dataType: 'json',
       data: JSON.stringify(searchOptions)
-    })
+    });
   },
 
   findRecord(store, type, id) {
