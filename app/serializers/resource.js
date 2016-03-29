@@ -1,7 +1,12 @@
 import DS from 'ember-data';
 import ApplicationSerializer from './application';
-
+// DS.EmbeddedRecordsMixin
 export default ApplicationSerializer.extend({
+  // attrs: {
+  //   author: { embedded: 'always' },
+  //   comments: { serialize: 'ids' }
+  // },
+
   normalizeResponse(store, type, data, id, requestType) {
     if (requestType === 'findAll') {
       return this.normalizeSearchResponse('resource', data);
@@ -20,23 +25,34 @@ export default ApplicationSerializer.extend({
     let predicates = data.content.attributes.map(attr => ({
       type: 'predicate',
       id: attr.id,
-      attributes: attr
+      attributes: attr,
+      resource: encodeURIComponent(data.id)
     }));
 
-    return {
+    let resAsJSONAPI = {
       data: this.normalize(type, data),
-      links: {
-        self: this.url + this.namespace + 'document/' + data.id
-      },
       included: predicates
     };
+
+    return resAsJSONAPI;
+    // this._super(type, resAsJSONAPI);
   },
 
   normalize(type, hash) {
+    let relationships = {
+      predicates: {
+        data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
+      }
+    };
+
     return {
       type: 'resource', // or type.modelName
       id: encodeURIComponent(hash.id),
-      attributes: hash
+      attributes: hash,
+      relationships: relationships,
+      // links: {
+      //   self: this.url + this.namespace + 'document/' + encodeURIComponent(hash.id)
+      // },
     };
   }
 });
