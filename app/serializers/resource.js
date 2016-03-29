@@ -47,9 +47,78 @@ export default ApplicationSerializer.extend({
       id: encodeURIComponent(hash.id),
       attributes: hash,
       relationships: relationships,
-      // links: {
-      //   self: this.url + this.namespace + 'document/' + encodeURIComponent(hash.id)
-      // },
     };
   }
 });
+
+
+// {
+//   "id": "http://localhost:8080/api/doc/2",
+//   "dateTime": "Tue, 29 Mar 2016 00:43:44 GMT",
+//   "createdDate": 1459212224352,
+//   "title": "Honolulu",
+//   "documentType": "object",
+//   "cannotDisplay": false,
+//   "content": {
+//     "attributes": [
+//       {
+//         "id": "schema:name",
+//         "name": "schema:name",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "type": "text",
+//         "values": [
+//           {
+//             "id": "0",
+//             "resourceId": "http://localhost:8080/api/doc/2",
+//             "attributeId": "schema:name",
+//             "data": "Honolulu",
+//             "feedbackSummary": {
+//               "numberComments": 0,
+//               "numberRatings": 0
+//             },
+//             "microdata": {
+//               "transactionStartId": "1"
+//             }
+//           },
+//           {
+//             "id": "1",
+//             "resourceId": "http://localhost:8080/api/doc/2",
+//             "attributeId": "schema:name",
+//             "data": "Honolulu",
+//             "feedbackSummary": {
+//               "numberComments": 0,
+//               "numberRatings": 0
+//             },
+//             "microdata": {
+//               "transactionStartId": "1"
+//             }
+//           }
+//         ]
+//       },
+//       ...
+//     ],
+//     "objectSummary": {
+//       "numAttachments": 0,
+//       "numComments": 0
+//     }
+//   },
+//   "communityTags": [
+//     "test"
+//   ],
+//   "personalTags": [
+//     "test"
+//   ],
+//   "versionTimestamp": 1459212224000,
+//   "timemap": [
+//     {
+//       "href": "http://localhost:8080/api/doc/2",
+//       "rel": "original timegate"
+//     },
+//     {
+//       "href": "http://localhost:8080/api/doc/2?timestamp=1459212224352",
+//       "rel": "memento",
+//       "dateTime": "Tue, 29 Mar 2016 00:43:44 GMT",
+//       "count": "7"
+//     }
+//   ]
+// }
