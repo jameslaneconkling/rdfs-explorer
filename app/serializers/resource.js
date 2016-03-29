@@ -12,11 +12,12 @@ export default ApplicationSerializer.extend({
 
   normalizeSearchResponse(type, data) {
     return {
-      data: data.documents.map(resource => this.normalize(type, resource))
+      data: data.documents.map(resource => this.normalizeResource(type, resource))
     };
   },
 
   normalizeSingleResponse(type, data) {
+    // TODO - centralize predicate normalization
     let predicates = data.content && data.content.attributes ?
       data.content.attributes.map(attr => ({
         type: 'predicate',
@@ -26,19 +27,18 @@ export default ApplicationSerializer.extend({
       })) : [];
 
     let resAsJSONAPI = {
-      data: this.normalize(type, data),
+      data: this.normalizeResource(type, data),
       included: predicates
     };
 
     return resAsJSONAPI;
-    // this._super(type, resAsJSONAPI);
   },
 
-  normalize(type, hash) {
+  normalizeResource(type, hash) {
     let relationships = hash.content && hash.content.attributes ?
       {
         predicates: {
-          data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
+          data: this.normalizePredicate(type, hash.content.attributes)
         }
       } : {};
 
@@ -48,6 +48,10 @@ export default ApplicationSerializer.extend({
       attributes: hash,
       relationships: relationships,
     };
+  },
+
+  normalizePredicate(type, hash) {
+    return hash.map(attr => ({ type: 'predicate', id: attr.id}))
   }
 });
 
