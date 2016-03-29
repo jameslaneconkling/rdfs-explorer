@@ -8,7 +8,11 @@ function rename(names, hash) {
   });
 
   return hash;
-};
+}
+
+function generateObjectId(obj) {
+  return `${obj.resourceId}/${obj.attributeId}/${obj.id}`;
+}
 
 export default ApplicationSerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
@@ -41,6 +45,13 @@ export default ApplicationSerializer.extend({
       included: [].concat(predicates, objects)
     };
 
+    // temp - remove unnecessary attributes
+    // delete resAsJSONAPI.data.attributes.content;
+    // delete resAsJSONAPI.data.attributes.timemap;
+    // delete resAsJSONAPI.data.attributes.communityTags;
+    // delete resAsJSONAPI.data.attributes.personalTags;
+    // resAsJSONAPI.included.filterBy('type', 'predicate').forEach(predicate => delete predicate.attributes.values);
+
     return resAsJSONAPI;
   },
 
@@ -64,7 +75,7 @@ export default ApplicationSerializer.extend({
     let relationships = hash.values ?
       {
         objects: {
-          data: hash.values.map(object => ({ type: 'object', id: object.id}))
+          data: hash.values.map(object => ({ type: 'object', id: generateObjectId(object) }))
         }
       } : {};
 
@@ -80,7 +91,7 @@ export default ApplicationSerializer.extend({
   normalizeObject(type, hash) {
     return {
       type: 'object',
-      id: hash.id,
+      id: generateObjectId(hash),
       attributes: rename([['data', 'value']], hash)
       // predicate: hash.predicateId
     };

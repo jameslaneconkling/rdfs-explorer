@@ -1,31 +1,29 @@
-<h2><strong>{{model.title}}</strong></h2>
+<h1>{{model.title}}</h1>
 {{json-stringify model}}
 
-<h3>Predicates</h3>
-<ol>
+<h2>Predicates:</h2>
+<ul>
   {{#each model.predicates as |predicate|}}
-    {{#predicate-item model=predicate}}
-
+    <li>
       <dl>
-        <dd><strong>{{predicate.name}}</strong></dd>
+        <dd><h3>{{predicate.name}}</h3></dd>
         <dt>{{json-stringify predicate}}</dt>
       </dl>
 
       <dl>
-        <dd><em>Objects</em></dd>
+        <dd>Objects:</dd>
         <dt>
 
           <ul>
-            {{#each predicate.object as |object|}}
+            {{#each predicate.objects as |object|}}
               <li>
-                <div><strong>{{object.data}}</strong></div>
+                <div><em>{{object.value}}</em></div>
                 {{json-stringify object}}
               </li>
             {{/each}}
           </ul>
         </dt>
       </dl>
-
-    {{/predicate-item}}
+    </li>
   {{/each}}
-</ol>
+</ul>
