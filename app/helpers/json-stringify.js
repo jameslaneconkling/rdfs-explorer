@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export function jsonStringify(params/*, hash*/) {
+export function jsonStringify(params, hash) {
   return JSON.stringify(params);
 }
 

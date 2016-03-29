@@ -1,3 +1,14 @@
-{{json-stringify model}}
+{{!-- {{json-stringify model}} --}}
+
+<ul>
+  {{#each model as |resource|}}
+    <li>
+      <dl>
+        <dd><strong>{{resource.title}}</strong></dd>
+        <dt><code>{{json-stringify resource}}</code></dt>
+      </dl>
+    </li>
+  {{/each}}
+</ul>
 
 {{outlet}}
