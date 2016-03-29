@@ -1,2 +1,14 @@
 <h3><strong>{{model.title}}</strong></h3>
-<code>{{json-stringify model}}</code>
+{{json-stringify model}}
+
+<h3>Predicates</h3>
+<ol>
+  {{#each model.predicates as |predicate|}}
+    <li>
+      <dl>
+        <dd><strong>{{predicate.name}}</strong></dd>
+        <dt>{{json-stringify predicate}}</dt>
+      </dl>
+    </li>
+  {{/each}}
+</ol>

@@ -1,7 +1,7 @@
 import Ember      from 'ember';
 
-export function jsonStringify(params, hash) {
-  return JSON.stringify(params);
+export function jsonStringify([json], hash) {
+  return Ember.String.htmlSafe(`<code>${JSON.stringify(json)}</code>`);
 }
 
 export default Ember.Helper.helper(jsonStringify);
