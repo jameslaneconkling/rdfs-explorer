@@ -3,14 +3,22 @@ import DS from 'ember-data';
 export default DS.JSONAPISerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
     if (requestType === 'findAll') {
-      return {
-        data: data.documents.map(resource => this.normalize('resource', resource))
-      };
+      return this.normalizeSearchResponse('resource', data);
     } else if (requestType === 'findRecord') {
-      return {
-        data: this.normalize('resource', data)
-      };
+      return this.normalizeSingleResponse('response', data);
     }
+  },
+
+  normalizeSearchResponse(type, data) {
+    return {
+      data: data.documents.map(resource => this.normalize(type, resource))
+    };
+  },
+
+  normalizeSingleResponse(type, data) {
+    return {
+      data: this.normalize(type, data)
+    };
   },
 
   normalize(type, hash) {
