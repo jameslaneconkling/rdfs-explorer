@@ -1,0 +1,13 @@
+<ul>
+  {{#each model as |resource|}}
+    <li>
+      <dl>
+        <dd>{{#link-to 'resource' resource}}{{resource.title}}{{/link-to}}</dd>
+        <dt><code>{{json-stringify resource}}</code></dt>
+      </dl>
+    </li>
+  {{/each}}
+</ul>
+
+{{outlet}}
+
