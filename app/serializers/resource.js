@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import ApplicationSerializer from './application';
 
-export default DS.JSONAPISerializer.extend({
+export default ApplicationSerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
     if (requestType === 'findAll') {
       return this.normalizeSearchResponse('resource', data);
@@ -16,8 +17,15 @@ export default DS.JSONAPISerializer.extend({
   },
 
   normalizeSingleResponse(type, data) {
+    let predicates = data.content.attributes.map(attr => ({
+      type: 'predicate',
+      id: attr.id,
+      attributes: attr
+    }));
+
     return {
-      data: this.normalize(type, data)
+      data: this.normalize(type, data),
+      included: predicates
     };
   },
 
