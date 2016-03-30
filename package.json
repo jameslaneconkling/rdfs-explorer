@@ -1,7 +1,7 @@
 {
-  "name": "emberdata",
+  "name": "emberdata-rdfs",
   "version": "0.0.0",
-  "description": "Small description for emberdata goes here",
+  "description": "proof of concept ember-data adapter layer for rdfs data structures",
   "private": true,
   "directories": {
     "doc": "doc",

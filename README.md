@@ -1,3 +1,5 @@
+# RDFs Ember Data Adapter
+
 ## Installation
 
 ```bash

@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'emberdata',
+    modulePrefix: 'emberdata-rdfs',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
