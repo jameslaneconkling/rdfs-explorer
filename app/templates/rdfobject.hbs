@@ -1,1 +1,8 @@
-{{outlet}}
+<h1>{{model.value}}</h1>
+{{json-stringify model}}
+
+<h2>Predicate: {{model.predicate.name}}</h2>
+{{json-stringify model.predicate}}
+
+<h2>Resource: {{model.predicate.resource.title}}</h2>
+{{json-stringify model.predicate.resource}}

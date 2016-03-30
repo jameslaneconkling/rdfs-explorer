@@ -11,7 +11,11 @@ function rename(names, hash) {
 }
 
 function generateObjectId(obj) {
-  return `${obj.resourceId}/${obj.attributeId}/${obj.id}`;
+  return encodeURIComponent(`${obj.resourceId}/${obj.attributeId}/${obj.id}`);
+}
+
+function generatePredicateId(predicate) {
+  return encodeURIComponent(`${predicate.resourceId}/${predicate.id}`);
 }
 
 export default ApplicationSerializer.extend({
@@ -59,7 +63,7 @@ export default ApplicationSerializer.extend({
     let relationships = hash.content && hash.content.attributes ?
       {
         predicates: {
-          data: hash.content.attributes.map(attr => ({ type: 'predicate', id: attr.id}))
+          data: hash.content.attributes.map(attr => ({ type: 'predicate', id: generatePredicateId(attr)}))
         }
       } : {};
 
@@ -81,7 +85,7 @@ export default ApplicationSerializer.extend({
 
     return {
       type: 'predicate',
-      id: hash.id,
+      id: generatePredicateId(hash),
       attributes: hash,
       relationships: relationships
       //resource: encodeURIComponent(hash.resourceId)
@@ -98,7 +102,7 @@ export default ApplicationSerializer.extend({
   }
 });
 
-
+// TURN THIS
 // {
 //   "id": "http://localhost:8080/api/doc/2",
 //   "dateTime": "Tue, 29 Mar 2016 00:43:44 GMT",
@@ -166,6 +170,175 @@ export default ApplicationSerializer.extend({
 //       "rel": "memento",
 //       "dateTime": "Tue, 29 Mar 2016 00:43:44 GMT",
 //       "count": "7"
+//     }
+//   ]
+// }
+
+// INTO THIS
+// {
+//   "data": {
+//     "type": "resource",
+//     "id": "http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fdoc%2F2",
+//     "attributes": {
+//       "id": "http://localhost:8080/api/doc/2",
+//       "dateTime": "Tue, 29 Mar 2016 00:43:44 GMT",
+//       "createdDate": 1459212224352,
+//       "title": "Honolulu",
+//       "documentType": "object",
+//       "cannotDisplay": false,
+//       "versionTimestamp": 1459212224000
+//     },
+//     "relationships": {
+//       "predicates": {
+//         "data": [
+//           {
+//             "type": "predicate",
+//             "id": "schema:name"
+//           },
+//           {
+//             "type": "predicate",
+//             "id": "gn:population"
+//           },
+//           {
+//             "type": "predicate",
+//             "id": "gsp:asWKT"
+//           }
+//         ]
+//       }
+//     }
+//   },
+//   "included": [
+//     {
+//       "type": "predicate",
+//       "id": "schema:name",
+//       "attributes": {
+//         "id": "schema:name",
+//         "name": "schema:name",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "type": "text"
+//       },
+//       "relationships": {
+//         "objects": {
+//           "data": [
+//             {
+//               "type": "object",
+//               "id": "http://localhost:8080/api/doc/2/schema:name/0"
+//             },
+//             {
+//               "type": "object",
+//               "id": "http://localhost:8080/api/doc/2/schema:name/1"
+//             }
+//           ]
+//         }
+//       }
+//     },
+//     {
+//       "type": "predicate",
+//       "id": "gn:population",
+//       "attributes": {
+//         "id": "gn:population",
+//         "name": "gn:population",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "type": "decimal"
+//       },
+//       "relationships": {
+//         "objects": {
+//           "data": [
+//             {
+//               "type": "object",
+//               "id": "http://localhost:8080/api/doc/2/gn:population/0"
+//             }
+//           ]
+//         }
+//       }
+//     },
+//     {
+//       "type": "predicate",
+//       "id": "gsp:asWKT",
+//       "attributes": {
+//         "id": "gsp:asWKT",
+//         "name": "gsp:asWKT",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "type": "geometry"
+//       },
+//       "relationships": {
+//         "objects": {
+//           "data": [
+//             {
+//               "type": "object",
+//               "id": "http://localhost:8080/api/doc/2/gsp:asWKT/0"
+//             }
+//           ]
+//         }
+//       }
+//     },
+//     {
+//       "type": "object",
+//       "id": "http://localhost:8080/api/doc/2/schema:name/0",
+//       "attributes": {
+//         "id": "0",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "attributeId": "schema:name",
+//         "feedbackSummary": {
+//           "numberComments": 0,
+//           "numberRatings": 0
+//         },
+//         "microdata": {
+//           "transactionStartId": "1"
+//         },
+//         "value": "Honolulu"
+//       }
+//     },
+//     {
+//       "type": "object",
+//       "id": "http://localhost:8080/api/doc/2/schema:name/1",
+//       "attributes": {
+//         "id": "1",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "attributeId": "schema:name",
+//         "feedbackSummary": {
+//           "numberComments": 0,
+//           "numberRatings": 0
+//         },
+//         "microdata": {
+//           "transactionStartId": "1"
+//         },
+//         "value": "Honolulu"
+//       }
+//     },
+//     {
+//       "type": "object",
+//       "id": "http://localhost:8080/api/doc/2/gn:population/0",
+//       "attributes": {
+//         "id": "0",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "attributeId": "gn:population",
+//         "feedbackSummary": {
+//           "numberComments": 0,
+//           "numberRatings": 0
+//         },
+//         "microdata": {
+//           "transactionStartId": "1"
+//         },
+//         "value": "371657"
+//       }
+//     },
+//     {
+//       "type": "object",
+//       "id": "http://localhost:8080/api/doc/2/gsp:asWKT/0",
+//       "attributes": {
+//         "id": "0",
+//         "resourceId": "http://localhost:8080/api/doc/2",
+//         "attributeId": "gsp:asWKT",
+//         "feedbackSummary": {
+//           "numberComments": 0,
+//           "numberRatings": 0
+//         },
+//         "microdata": {
+//           "transactionStartId": "1"
+//         },
+//         "value": "POINT(-157.85833 21.30694)"
+//       }
 //     }
 //   ]
 // }

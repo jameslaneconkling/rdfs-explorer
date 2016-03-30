@@ -2,7 +2,7 @@
   {{#each model as |resource|}}
     <li>
       <dl>
-        <dd>{{#link-to 'resource' resource}}{{resource.title}}{{/link-to}}</dd>
+        <dd>{{#link-to 'resource' resource.id}}{{resource.title}}{{/link-to}}</dd>
         <dt>{{json-stringify resource}}</dt>
       </dl>
     </li>

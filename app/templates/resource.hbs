@@ -11,13 +11,13 @@
       </dl>
 
       <dl>
-        <dd>Objects:</dd>
+        <dd><em>Objects:</em></dd>
         <dt>
 
           <ul>
             {{#each predicate.objects as |object|}}
               <li>
-                <div><em>{{object.value}}</em></div>
+                <div>{{#link-to 'rdfobject' object.predicate.resource.id object.predicate.id object.id}}{{object.value}}{{/link-to}}</div>
                 {{json-stringify object}}
               </li>
             {{/each}}
