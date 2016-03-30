@@ -20,7 +20,7 @@ function generatePredicateId(predicate) {
 
 export default ApplicationSerializer.extend({
   normalizeResponse(store, type, data, id, requestType) {
-    if (requestType === 'findAll') {
+    if (requestType === 'findAll' || requestType === 'query') {
       return this.normalizeSearchResponse('resource', data);
     } else if (requestType === 'findRecord') {
       return this.normalizeSingleResponse('response', data);

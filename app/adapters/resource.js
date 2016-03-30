@@ -1,9 +1,10 @@
+import Ember              from 'ember';
 import ApplicationAdapter from './application';
-import Ember from 'ember';
+import _                  from 'lodash';
 
 export default ApplicationAdapter.extend({
-  findAll(store, type) {
-    let searchOptions = {
+  query(store, type, query = {}) {
+    let searchDefaults = _.defaults(query, {
       "start": 0,
       "rows": 23,
       "fields": [],
@@ -19,21 +20,18 @@ export default ApplicationAdapter.extend({
       "dataSources": [],
       "log": true,
       "useDefaults": true
-    };
+    });
 
     return Ember.$.ajax({
       type: 'POST',
       url: this.namespace + 'search',
       contentType: 'application/json',
       dataType: 'json',
-      data: JSON.stringify(searchOptions)
+      data: JSON.stringify(searchDefaults)
     });
   },
 
   findRecord(store, type, id) {
     return Ember.$.get(this.namespace + 'document/' + id);
-  },
-
-  queryRecord() {
   }
 });
