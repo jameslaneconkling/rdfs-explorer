@@ -1,3 +1,11 @@
+{{input
+  value=(readonly queryString)
+  key-up='updateQueryString'
+  enter='submit'
+}}
+
+<button {{action "submit"}}>SUBMIT</button>
+
 <div><em>{{model.meta.id}}</em></div>
 <div>time: <em>{{model.meta.elapsedTime}}</em></div>
 <div>results: <em>{{model.meta.resultCount}}</em></div>
