@@ -5,7 +5,7 @@ export default Ember.Route.extend({
 
   actions: {
     submit() {
-      console.log(this.get('queryString'));
+      this.transitionTo('results', { queryParams: { q: this.get('queryString') }});
     },
 
     updateQueryString(string) {
