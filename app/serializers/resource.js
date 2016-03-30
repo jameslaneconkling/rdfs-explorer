@@ -29,7 +29,12 @@ export default ApplicationSerializer.extend({
 
   normalizeSearchResponse(type, data) {
     return {
-      data: data.documents.map(resource => this.normalizeResource(type, resource))
+      data: data.documents.map(resource => this.normalizeResource(type, resource)),
+      meta: {
+        id: data.id,
+        elapsedTime: data.elapsedTime,
+        resultCount: data.totalMatches
+      }
     };
   },
 
